@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 
-const analyzeFile = async () => {
+const analyseFile = async () => {
   let dataChunks = await fs.readFile(process.argv[2]);
   const charsArray = Object.values(dataChunks).map(el =>
     String.fromCharCode(el)
@@ -37,4 +37,4 @@ const writeFile = async (charMap, numberOfChars, numberOfWords) => {
   await fs.writeFile("results.txt", results);
 };
 
-analyzeFile();
+analyseFile();
