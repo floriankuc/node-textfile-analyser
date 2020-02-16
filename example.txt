@@ -1,2 +1,1 @@
-Das ist
-ein Test.
+This is an example text. Words and characters will be counted. Look at results.txt after running the script.

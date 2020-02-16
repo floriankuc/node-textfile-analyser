@@ -1,8 +1,6 @@
 const fs = require("fs").promises;
 
-analyzeFile();
-
-async function analyzeFile() {
+const analyzeFile = async () => {
   let dataChunks = await fs.readFile(process.argv[2]);
   const charsArray = Object.values(dataChunks).map(el =>
     String.fromCharCode(el)
@@ -10,40 +8,33 @@ async function analyzeFile() {
 
   const numberOfChars = getNumberOfChars(charsArray);
   const numberOfWords = getNumberOfWords(charsArray);
-  const filteredString = charsArray.join("").replace(/\n/g, " ");
-
-  const charMap = getCharMap(filteredString);
+  const charMap = getCharMap(charsArray);
 
   writeFile(charMap, numberOfChars, numberOfWords);
-}
+};
 
-function getNumberOfChars(arr) {
-  return arr.length;
-}
+const getNumberOfChars = arr => arr.length;
 
-function getNumberOfWords(arr) {
-  return arr
+const getNumberOfWords = arr =>
+  arr
     .join("")
     .replace(/\n/g, " ")
     .split(" ").length;
-}
 
-function getCharMap(str) {
+const getCharMap = str => {
+  const filteredString = str.join("").replace(/\n/g, " ");
   const charMap = {};
-
-  for (char of str) {
-    if (!charMap[char]) {
-      charMap[char] = 1;
-    } else {
-      charMap[char]++;
-    }
+  for (char of filteredString) {
+    !charMap[char] ? (charMap[char] = 1) : charMap[char]++;
   }
   return charMap;
-}
+};
 
-async function writeFile(charMap, numberOfChars, numberOfWords) {
+const writeFile = async (charMap, numberOfChars, numberOfWords) => {
   const charMapString = JSON.stringify(charMap);
   const charMapStringFormatted = charMapString.replace(/[,{}]/g, "\n");
-  const results = `Characters: ${numberOfChars}\nWords: ${numberOfWords}\n\nUse of characters:\n${charMapStringFormatted}`;
+  const results = `Characters: ${numberOfChars}\nWords: ${numberOfWords}\n\nUse of characters:${charMapStringFormatted}`;
   await fs.writeFile("results.txt", results);
-}
+};
+
+analyzeFile();
